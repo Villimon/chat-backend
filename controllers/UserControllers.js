@@ -97,6 +97,7 @@ export const getMe = async (req, res) => {
 
     try {
         const user = await UserModal.findById(req.userId)
+            .populate(['friends'])
 
         if (!user) {
             return res.status(404).json({
@@ -137,15 +138,15 @@ export const updateFullName = async (req, res) => {
 export const getAllUsers = async (req, res) => {
     try {
         let fullName = req.query.term
-        const users = await UserModal.find()
+        // const users = await UserModal.find()
 
-        if (fullName) {
-            const users = await UserModal.find({ fullName: String(fullName) })
-            return res.json(users)
-        }
+        // if (fullName) {
+        const users = await UserModal.find({ fullName: new RegExp(fullName, 'i') })
+        return res.json(users)
+        // }
 
 
-        res.json(users)
+        // res.json(users)
     } catch (error) {
         console.log(error);
         res.status(400).json({
@@ -183,7 +184,7 @@ export const following = async (req, res) => {
                 }
                 res.json(doc)
             }
-        )
+        ).populate('friends')
 
 
     } catch (error) {

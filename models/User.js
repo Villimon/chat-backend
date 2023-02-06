@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     avatarUrl: String,
-    friends: { type: Array, default: [] },
+    friends: { type: Array, default: [], ref: "User" },
 },
     {
         timestamps: true
